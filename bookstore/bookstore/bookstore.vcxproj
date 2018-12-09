@@ -115,11 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bookstored.cpp" />
+    <ClCompile Include="bookstore.cpp" />
+    <ClCompile Include="booksys.cpp" />
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="usersys.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="booksys.h" />
     <ClInclude Include="database.h" />
+    <ClInclude Include="usersys.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

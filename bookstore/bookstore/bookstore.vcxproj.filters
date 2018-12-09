@@ -15,15 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bookstored.cpp">
+    <ClCompile Include="database.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="database.cpp">
+    <ClCompile Include="bookstore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="booksys.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="usersys.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="booksys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="usersys.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
