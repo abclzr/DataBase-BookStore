@@ -7,39 +7,33 @@ const int B = 100;
 template<class T>
 database<T>::database(std::string s)
 {
-	file.open(s);
+	file.open(s, ios::binary | ios::in | ios::out);
 	if (!file.is_open()) {
-		file.open(s, ios::out);
-		file.close();
-		file.open(s);
-	}
-	trash.open(s + ".trash");
-	if (!trash.is_open()) {
-		trash.open(s + ".trash", ios::out);
-		trash.close();
-		trash.open(s + "trash");
-	}
-
-	file.read(reinterpret_cast<char *> (&num), sizeof(num));
-	if (file.eof()) {
+		file.open(s, ios::binary | ios::out);
 		num = 0;
-		file.seekp(0);
 		file.write(reinterpret_cast<char *> (&num), sizeof(num));
 		head = 0; tail = 12;
 		file.write(reinterpret_cast<char *> (&head), sizeof(head));
 		file.write(reinterpret_cast<char *> (&tail), sizeof(tail));
-	}
-	else {
-		file.read(reinterpret_cast<char *> (&head), sizeof(head));
-		file.read(reinterpret_cast<char *> (&tail), sizeof(tail));
+		file.close();
+		file.open(s, ios::binary | ios::in | ios::out);
 	}
 
-	trash.read(reinterpret_cast<char *> (&top), sizeof(top));
-	if (trash.eof()) {
+	trash.open(s + ".trash", ios::binary | ios::in | ios::out);
+	if (!trash.is_open()) {
+		trash.open(s + ".trash", ios::binary | ios::out);
 		top = 0;
 		file.seekp(0);
 		file.write(reinterpret_cast<char *> (&top), sizeof(top));
+		trash.close();
+		trash.open(s + "trash", ios::binary | ios::in | ios::out);
 	}
+
+	file.read(reinterpret_cast<char *> (&num), sizeof(num));
+	file.read(reinterpret_cast<char *> (&head), sizeof(head));
+	file.read(reinterpret_cast<char *> (&tail), sizeof(tail));
+
+	trash.read(reinterpret_cast<char *> (&top), sizeof(top));
 }
 
 template<class T>

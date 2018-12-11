@@ -1,6 +1,8 @@
 #pragma once
 
 #include<string>
+#include<cstring>
+#include "database.h"
 using namespace std;
 
 class booksys
@@ -38,6 +40,10 @@ public:
 	public:
 		char ISBN[20], name[40], author[40], keyword[40];
 		int quantity;
+		book_base(const string &);
+		bool operator<(const book_base &) const;
+		bool operator==(const book_base &) const;
+		void copy(const book_base &);
 	};
 
 	class book_ISBN : book_base {
@@ -59,5 +65,13 @@ public:
 		bool operator<(const book_keyword &a) const;
 		bool operator==(const book_keyword &a) const;
 	};
+
+private:
+	database<book_ISBN> _ISBN;
+	database<book_name> _name;
+	database<book_author> _author;
+	database<book_author> _keyword;
+
+	book_base cur;
 };
 
