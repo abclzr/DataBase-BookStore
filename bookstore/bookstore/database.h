@@ -62,4 +62,7 @@ public:
 
 	//find the element
 	const T &get_acc(const T &) const;
+
+	//print all
+	void make_print();
 };

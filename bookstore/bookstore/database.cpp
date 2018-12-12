@@ -275,3 +275,19 @@ const T &database<T>::get_acc(const T &x) const {
 	a.make_fail();
 	return a;
 }
+
+template<class T>
+void database<T>::make_print()
+{
+	int pos = head, nxt, size;
+	T x;
+	while (pos) {
+		nxt = get_next(pos);
+		size = get_size(pos);
+		file.seekg(pos + sizeof(int) * 2);
+		for (int i = 0; i < size; ++i) {
+			file.read(reinterpret_cast<char *> (&x), sizeof(x));
+			x.print();
+		}
+	}
+}

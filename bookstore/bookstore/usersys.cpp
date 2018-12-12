@@ -150,3 +150,7 @@ void usersys::user::make_fail()
 {
 	level = 0;
 }
+
+void usersys::user::print()
+{
+}

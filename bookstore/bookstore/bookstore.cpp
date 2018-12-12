@@ -119,6 +119,7 @@ bool run(string &cmd) {
 					break;
 				}
 			}
+			book.push();
 		}
 		break;
 	case 8:

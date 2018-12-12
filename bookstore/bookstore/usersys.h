@@ -53,6 +53,7 @@ public:
 		void set_level(const string &);
 		void set_level(int);
 		void make_fail();
+		void print();
 	};
 
 	database<user> u;
