@@ -289,5 +289,6 @@ void database<T>::make_print()
 			file.read(reinterpret_cast<char *> (&x), sizeof(x));
 			x.print();
 		}
+		pos = nxt;
 	}
 }
