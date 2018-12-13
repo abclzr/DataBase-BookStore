@@ -101,6 +101,7 @@ bool run(string &cmd) {
 	case 7://modify
 		if (c.size() < 2 || user.level() < 3) error();
 		else {
+			book.pull();
 			for (int i = 1; i < c.size(); ++i) {
 				string s = c[i];
 				if (s[0] != '-') { error(); break; }

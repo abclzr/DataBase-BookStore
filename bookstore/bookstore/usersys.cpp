@@ -31,7 +31,7 @@ void usersys::login(const string &id, const string &pas)
 {
 	user x = u.get_acc(user(id));
 	if (x.level == 0) { puts("Invalid"); return; }
-	if (!the_same(x.passwd, 30, pas)) { puts("Invalid"); return; }
+	if (!the_same(x.passwd, N1, pas)) { puts("Invalid"); return; }
 	else cur = x;
 }
 
@@ -71,7 +71,7 @@ void usersys::passwd(const string &id, const string &oldpas, const string &pas)
 {
 	user x = u.get_acc(user(id));
 	if (x.level == 0) { puts("Invalid"); return; }
-	if (!the_same(x.passwd, 30, oldpas)) { puts("Invalid"); return; }
+	if (!the_same(x.passwd, N1, oldpas)) { puts("Invalid"); return; }
 	x.set_passwd(pas);
 	u.change(x);
 }
@@ -82,6 +82,14 @@ bool usersys::the_same(const char *c, int len, const string &a)
 	for (int i = 0; i < a.size(); ++i) if (c[i] != a[i]) return false;
 	for (int i = a.size(); i < len; ++i) if (c[i] != 0) return false;
 	return true;
+}
+
+usersys::user::user()
+{
+	memset(user_id, 0, sizeof(user_id));
+	memset(passwd, 0, sizeof(passwd));
+	memset(name, 0, sizeof(name));
+	level = 0;
 }
 
 usersys::user::user(const string &id, const string &pas = "", int lev = 0, const string &na = "")
@@ -102,7 +110,7 @@ usersys::user::user(const string &id, const string &pas, const string &lev, cons
 
 bool usersys::user::operator<(const user & a) const
 {
-	for (int i = 0; i < 30; ++i)
+	for (int i = 0; i < N1; ++i)
 		if (user_id[i] < a.user_id[i]) return true;
 		else if (user_id[i] > a.user_id[i]) return false;
 	return false;
@@ -110,7 +118,7 @@ bool usersys::user::operator<(const user & a) const
 
 bool usersys::user::operator==(const user &a) const
 {
-	for (int i = 0; i < 30; ++i)
+	for (int i = 0; i < N1; ++i)
 		if (user_id[i] != a.user_id[i]) return false;
 	return true;
 }
@@ -118,19 +126,19 @@ bool usersys::user::operator==(const user &a) const
 void usersys::user::set_user_id(const string &a)
 {
 	for (int i = 0; i < a.size(); ++i) user_id[i] = a[i];
-	for (int i = a.size(); i < 30; ++i) user_id[i] = 0;
+	for (int i = a.size(); i < N1; ++i) user_id[i] = 0;
 }
 
 void usersys::user::set_passwd(const string &a)
 {
 	for (int i = 0; i < a.size(); ++i) passwd[i] = a[i];
-	for (int i = a.size(); i < 30; ++i) passwd[i] = 0;
+	for (int i = a.size(); i < N1; ++i) passwd[i] = 0;
 }
 
 void usersys::user::set_name(const string &a)
 {
 	for (int i = 0; i < a.size(); ++i) name[i] = a[i];
-	for (int i = a.size(); i < 20; ++i) name[i] = 0;
+	for (int i = a.size(); i < N2; ++i) name[i] = 0;
 }
 
 void usersys::user::set_level(const string &a)

@@ -5,6 +5,9 @@
 #include "database.h"
 using namespace std;
 
+const int N1 = 30;
+const int N2 = 20;
+
 class usersys
 {
 public:
@@ -40,10 +43,11 @@ public:
 
 	class user {
 	public:
+		user();
 		user(const string &, const string &, int, const string &);
 		user(const string &, const string &, const string &, const string &);
 
-		char user_id[30], passwd[30], name[20], level;
+		char user_id[N1], passwd[N1], name[N2], level;
 		bool operator<(const user &) const;
 		bool operator==(const user &) const;
 

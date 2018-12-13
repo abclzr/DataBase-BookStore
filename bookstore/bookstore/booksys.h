@@ -6,6 +6,9 @@
 #include "database.h"
 using namespace std;
 
+const int N1 = 20;
+const int N2 = 40;
+
 class booksys
 {
 public:
@@ -15,6 +18,9 @@ public:
 
 	//select a book;
 	void select(const string &);
+
+	//pull the selected book from the file
+	void pull();
 
 	//set the attributes
 	void set_ISBN(const string &);
@@ -43,8 +49,9 @@ public:
 
 	class book_base {
 	public:
-		char ISBN[20], name[40], author[40], keyword[40];
+		char ISBN[N1], name[N2], author[N2], keyword[N2];
 		int quantity; double price;
+		bool ignoreISBN;
 		book_base();
 		book_base(const book_base &);
 		bool operator<(const book_base &) const;
@@ -62,6 +69,7 @@ public:
 	class book_ISBN : public book_base {
 	public:
 		book_ISBN();
+		book_ISBN(const string &);
 		book_ISBN(const book_base &);
 		bool operator<(const book_ISBN &) const;
 		bool operator==(const book_ISBN &) const;
@@ -71,6 +79,7 @@ public:
 	class book_name : public book_base {
 	public:
 		book_name();
+		book_name(const string &);
 		book_name(const book_base &);
 		bool operator<(const book_name &) const;
 		bool operator==(const book_name &) const;
@@ -80,6 +89,7 @@ public:
 	class book_author : public book_base {
 	public:
 		book_author();
+		book_author(const string &);
 		book_author(const book_base &);
 		bool operator<(const book_author &) const;
 		bool operator==(const book_author &) const;
@@ -89,6 +99,7 @@ public:
 	class book_keyword : public book_base {
 	public:
 		book_keyword();
+		book_keyword(const string &);
 		book_keyword(const book_base &);
 		bool operator<(const book_keyword &) const;
 		bool operator==(const book_keyword &) const;
