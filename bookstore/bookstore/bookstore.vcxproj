@@ -118,11 +118,13 @@
     <ClCompile Include="bookstore.cpp" />
     <ClCompile Include="booksys.cpp" />
     <ClCompile Include="database.cpp" />
+    <ClCompile Include="finance.cpp" />
     <ClCompile Include="usersys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="booksys.h" />
     <ClInclude Include="database.h" />
+    <ClInclude Include="finance.h" />
     <ClInclude Include="usersys.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

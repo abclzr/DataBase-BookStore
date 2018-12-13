@@ -128,6 +128,20 @@ int database<T>::get(const T &x) {
 }
 
 template<class T>
+int database<T>::get_pos_in_block(const T &x, int pos)
+{
+	if (pos == -1) pos = get(x);
+	int size = get_size(pos);
+	T a;
+	file.seekg(pos + sizeof(int) * 2);
+	for (int i = 0; i < size; ++i) {
+		file.read(reinterpret_cast<char *> (&a), sizeof(a));
+		if (x == a) return i;
+	}
+	return -1;
+}
+
+template<class T>
 void database<T>::move(int l1, int r1, int l2, int r2, int flag) {
 	int t1, t2; T x;
 	if (flag == 0) {
@@ -290,5 +304,15 @@ void database<T>::make_print()
 			x.print();
 		}
 		pos = nxt;
+	}
+}
+
+template<class T>
+void database<T>::make_print(const T &x)
+{
+	int pos = get(x), tmp = get_pos_in_block(x, pos);
+	T a;
+	while (true) {
+		
 	}
 }

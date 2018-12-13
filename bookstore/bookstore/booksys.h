@@ -4,6 +4,7 @@
 #include<cstring>
 #include<sstream>
 #include "database.h"
+#include "finance.h"
 using namespace std;
 
 const int N1 = 20;
@@ -15,6 +16,8 @@ public:
 	booksys();
 	~booksys();
 
+	//return whether has selected a book
+	bool select_empty();
 
 	//select a book;
 	void select(const string &);
@@ -119,6 +122,7 @@ private:
 	database<book_author> _keyword;
 
 	book_base cur;
-	book_base changes;
+
+	finance_base finance;
 };
 

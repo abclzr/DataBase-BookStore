@@ -34,6 +34,9 @@ public:
 	//find the position of the block that fits x;
 	int get(const T &);
 
+	//find the position of the fits x in the file;
+	int get_pos_in_block(const T &, int);
+
 	//return the position of a new block;
 	int getnew();
 
@@ -65,4 +68,7 @@ public:
 
 	//print all
 	void make_print();
+
+	//print the specific books
+	void make_print(const T &);
 };

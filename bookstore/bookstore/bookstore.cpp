@@ -101,6 +101,7 @@ bool run(string &cmd) {
 	case 7://modify
 		if (c.size() < 2 || user.level() < 3) error();
 		else {
+			if (book.select_empty()) { error(); break; }
 			book.pull();
 			for (int i = 1; i < c.size(); ++i) {
 				string s = c[i];
@@ -124,6 +125,7 @@ bool run(string &cmd) {
 		}
 		break;
 	case 8:
+		if (book.select_empty()) { error(); break; }
 		if (c.size() != 3 || user.level() < 3) error();
 		else book.importt(to_int(c[1]), to_double(c[2]));
 		break;

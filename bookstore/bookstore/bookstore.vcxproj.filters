@@ -27,6 +27,9 @@
     <ClCompile Include="usersys.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="finance.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database.h">
@@ -36,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="usersys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="finance.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

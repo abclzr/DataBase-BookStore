@@ -2,7 +2,7 @@
 
 
 
-booksys::booksys() : _ISBN("ISBN_file"), _name("name_file"), _author("author_file"), _keyword("keyword_file")
+booksys::booksys() : _ISBN("ISBN_file"), _name("name_file"), _author("author_file"), _keyword("keyword_file"), finance("finance_file")
 {
 	cur.quantity = -1;
 }
@@ -10,6 +10,11 @@ booksys::booksys() : _ISBN("ISBN_file"), _name("name_file"), _author("author_fil
 
 booksys::~booksys()
 {
+}
+
+bool booksys::select_empty()
+{
+	return cur.quantity == -1;
 }
 
 void booksys::delete_all(const book_base &x) {
@@ -53,49 +58,52 @@ void booksys::select(const string &ISBN_str)
 	cur = _ISBN.get_acc(x);
 	if (cur.quantity == -1) {
 		cur = x;
-		cur.quantity = -1;
+		cur.quantity = -2;
 	}
 }
 
 void booksys::pull() {
-	if (cur.quantity != -1) delete_all(cur), changes = cur;
-	else changes = cur, changes.quantity = 0;
+	if (cur.quantity != -2) delete_all(cur);
+	else cur.quantity = 0;
 }
 
 void booksys::set_ISBN(const string &str)
 {
-	changes.set_ISBN(str);
+	cur.set_ISBN(str);
 }
 
 void booksys::set_name(const string &str)
 {
-	changes.set_name(str);
+	cur.set_name(str);
 }
 
 void booksys::set_author(const string &str)
 {
-	changes.set_author(str);
+	cur.set_author(str);
 }
 
 void booksys::set_keyword(const string &str)
 {
-	changes.set_keyword(str);
+	cur.set_keyword(str);
 }
 
 void booksys::set_price(const string &str)
 {
-	changes.set_price(str);
+	cur.set_price(str);
 }
 
 void booksys::push()
 {
-	cur = changes;
-	add_all(changes);
+	add_all(cur);
 }
 
 void booksys::importt(int num, double price)
 {
-	if (cur.quantity = )
+	pull();
+	cur.quantity += num;
+	push();
+
+	finance.lose(price);
 }
 
 void booksys::show_all()
@@ -105,15 +113,18 @@ void booksys::show_all()
 
 void booksys::show_finance_all()
 {
+	finance.show();
 }
 
-void booksys::show_finance(int)
+void booksys::show_finance(int times)
 {
+	finance.show(times);
 }
 
 void booksys::show_ISBN(const string &str)
 {
-
+	book_ISBN x(str);
+	_ISBN.make_print(x);
 }
 
 void booksys::show_name(const string &)
@@ -128,8 +139,17 @@ void booksys::show_keyword(const string &)
 {
 }
 
-void booksys::buy(const string &, int)
+void booksys::buy(const string &str, int num)
 {
+	book_ISBN x(str);
+	book_base a = _ISBN.get_acc(x);
+	if (a.quantity == -1) { puts("Invalid"); return; }
+	if (a.quantity < num) { puts("Invalid"); return; }
+	delete_all(a);
+	a.quantity -= num;
+	add_all(a);
+
+	finance.gain(num * a.price);
 }
 
 booksys::book_ISBN::book_ISBN() : book_base()
