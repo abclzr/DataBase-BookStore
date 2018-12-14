@@ -1,6 +1,7 @@
 #pragma once
 
 #include<fstream>
+#include<iostream>
 #include<string>
 using namespace std;
 
@@ -8,7 +9,7 @@ template<class T>
 class database
 {
 public:
-	static const int B = 100;
+	static const int B = 200;
 	int head, tail, num, top;
 	fstream file, trash;
 
@@ -130,7 +131,7 @@ database<T>::~database()
 	file.write(reinterpret_cast<char *> (&tail), sizeof(tail));
 
 	trash.seekp(0);
-	file.write(reinterpret_cast<char *> (&top), sizeof(top));
+	trash.write(reinterpret_cast<char *> (&top), sizeof(top));
 
 	file.close();
 	trash.close();
@@ -245,8 +246,6 @@ int database<T>::get_pos_in_block(int pos, const T &x)
 	return -1;
 }
 
-
-#include<iostream>
 template<class T>
 void database<T>::move(int l1, int r1, int l2, int r2, int flag) {
 	int t1, t2; T x;
@@ -328,6 +327,7 @@ void database<T>::add(const T &x) {
 	else {
 		insert(pos, x);
 	}
+	//cout << "next(head) = " << get_next(head) << endl;
 }
 
 template<class T>
@@ -364,6 +364,7 @@ void database<T>::rem(int pos, const T &x) {
 		if (a == x) {
 			move(pos + sizeof(int) * 2 + sizeof(T) * i, pos + sizeof(int) * 2 + sizeof(T) * (size - 1), pos + sizeof(int) * 2 + sizeof(T) * (i + 1), pos + sizeof(int) * 2 + sizeof(T) * size, 1);
 			set_size(pos, --size);
+			--num;
 			if (size == 0) del(pos);
 			return;
 		}
@@ -375,7 +376,6 @@ template<class T>
 void database<T>::remove(const T &x) {
 	int pos = get(x);
 	rem(pos, x);
-	--num;
 }
 
 template<class T>
