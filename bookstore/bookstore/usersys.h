@@ -1,6 +1,7 @@
 #pragma once
 
 #include<string>
+#include<cstring>
 #include<fstream>
 #include<iostream>
 #include "database.hpp"
