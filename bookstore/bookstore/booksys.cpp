@@ -1,4 +1,4 @@
-#include "booksys.h"
+﻿#include "booksys.h"
 
 
 
@@ -453,6 +453,6 @@ void booksys::book_base::set_price(const string &str)
 
 void booksys::book_base::print()
 {
-	printf("%s\t%s\t%s\t%s\t%.2lf\t%d±¾\n", ISBN, name, author, true_key, price, quantity);
+	printf("%s\t%s\t%s\t%s\t%.2lf\t%d本\n", ISBN, name, author, true_key, price, quantity);
 }
 
