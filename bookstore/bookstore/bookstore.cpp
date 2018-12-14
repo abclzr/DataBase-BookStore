@@ -56,13 +56,17 @@ bool run(string &cmd) {
 	while (p != string::npos) {
 		c.push_back(cmd.substr(0, p));
 		cmd = cmd.substr(p + 1);
+		while (cmd.size() && cmd[0] == ' ') cmd = cmd.substr(1);
 		l = cmd.find('"');
 		r = cmd.find('"', l + 1);
 		p = cmd.find(' ');
-		while (l < p && p < r) p = cmd.find(' ', p + 1);
+		if (l != string::npos && r != string::npos)
+			while (l < p && p < r) p = cmd.find(' ', p + 1);
 	}
-	c.push_back(cmd);
+	if (cmd.size())
+		c.push_back(cmd);
 
+	bool flag;
 	int op = get_command_num(c[0]);
 	switch (op) {
 	case -1://exit
@@ -106,6 +110,18 @@ bool run(string &cmd) {
 		if (c.size() < 2 || user.level() < 3) error();
 		else {
 			if (book.select_empty()) { error(); break; }
+			flag = true;
+			for (int i = 1; i < c.size(); ++i)
+				if (c[i].substr(1, 4) == "ISBN") {
+					string s = c[i].substr(6);
+					if (book.exist_ISBN(s)) {
+						error();
+						flag = false;
+						break;
+					}
+				}
+			if (!flag) break;
+
 			book.pull();
 			for (int i = 1; i < c.size(); ++i) {
 				string s = c[i];
@@ -134,8 +150,8 @@ bool run(string &cmd) {
 		else book.importt(to_int(c[1]), to_double(c[2]));
 		break;
 	case 9://show
+		if (user.level() < 1) { error(); break; }
 		if (c.size() == 1) {
-			if (user.level() < 1) { error(); break; }
 			book.show_all();
 		}
 		else {

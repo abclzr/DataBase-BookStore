@@ -16,6 +16,9 @@ public:
 	database(std::string);
 	~database();
 
+	//return whether the element exits in the database
+	bool exist(const T&);
+
 	//return the tot number of the elements;
 	int get_num();
 

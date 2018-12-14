@@ -3,7 +3,7 @@
 #include<string>
 #include<cstring>
 #include<sstream>
-#include "database.h"
+#include "database.hpp"
 #include "finance.h"
 
 using namespace std;
@@ -16,6 +16,9 @@ public:
 
 	booksys();
 	~booksys();
+
+	//return whether there is a book of the given ISBN
+	bool exist_ISBN(const string &);
 
 	//return whether has selected a book
 	bool select_empty();
@@ -53,7 +56,7 @@ public:
 
 	class book_base {
 	public:
-		char ISBN[N1], name[N2], author[N2], keyword[N2];
+		char ISBN[N1], name[N2], author[N2], keyword[N2], true_key[N2];
 		int quantity; double price;
 		bool ignoreISBN;
 		book_base();
@@ -66,6 +69,7 @@ public:
 		void set_name(const string &);
 		void set_author(const string &);
 		void set_keyword(const string &);
+		void set_true_key(const string &);
 		void set_price(const string &);
 		void print();
 	};
@@ -120,7 +124,7 @@ private:
 	database<book_ISBN> _ISBN;
 	database<book_name> _name;
 	database<book_author> _author;
-	database<book_author> _keyword;
+	database<book_keyword> _keyword;
 
 	book_base cur;
 

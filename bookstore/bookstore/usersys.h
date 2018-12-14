@@ -2,7 +2,8 @@
 
 #include<string>
 #include<fstream>
-#include "database.h"
+#include<iostream>
+#include "database.hpp"
 using namespace std;
 
 class usersys
@@ -28,18 +29,21 @@ public:
 	//add a new user;
 	void useradd(const string &, const string &, const string &, const string &);
 
-	//register
+	//register;
 	void registerr(const string &, const string &, const string &);
 
-	//delete
+	//delete;
 	void deletee(const string &);
 
-	//change password
+	//change password;
 	void passwd(const string &, const string &);
 
 	void passwd(const string &, const string &, const string &);
 
 	bool the_same(const char*, int, const string &);
+
+	//show for debug;
+	void show();
 
 	class user {
 	public:

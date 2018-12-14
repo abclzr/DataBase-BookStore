@@ -52,6 +52,8 @@ void finance_base::lose(double num)
 
 void finance_base::show()
 {
+	printf("+ %.2lf - %.2lf\n", x, y);
+	/*
 	file.seekg(sizeof(int) + sizeof(double) * 2);
 	double xx, yy;
 	for (int i = 1; i <= top; ++i) {
@@ -59,16 +61,16 @@ void finance_base::show()
 		file.read(reinterpret_cast<char *> (&yy), sizeof(yy));
 		printf("+ %.2lf - %.2lf\n", xx, yy);
 	}
+	*/
 }
 
 void finance_base::show(int times)
 {
 	if (times > top) { puts("Invalid"); return; }
-	file.seekg(sizeof(int) + sizeof(double) * 2 + sizeof(double) * 2 * (top - times));
+	if (times == top) { show(); return; }
+	file.seekg(sizeof(int) + sizeof(double) * 2 + sizeof(double) * 2 * (top - times - 1));
 	double xx, yy;
-	for (int i = top - times + 1; i <= top; ++i) {
-		file.read(reinterpret_cast<char *> (&xx), sizeof(xx));
-		file.read(reinterpret_cast<char *> (&yy), sizeof(yy));
-		printf("+ %.2lf - %.2lf\n", xx, yy);
-	}
+	file.read(reinterpret_cast<char *> (&xx), sizeof(xx));
+	file.read(reinterpret_cast<char *> (&yy), sizeof(yy));
+	printf("+ %.2lf - %.2lf\n", x - xx, y - yy);
 }

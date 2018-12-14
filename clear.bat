@@ -1,0 +1,12 @@
+del author_file
+del author_file.trash
+del current_user
+del finance_file
+del ISBN_file
+del ISBN_file.trash
+del keyword_file
+del keyword_file.trash
+del name_file
+del name_file.trash
+del user_file
+del user_file.trash

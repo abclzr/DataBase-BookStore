@@ -3,15 +3,15 @@
 usersys::usersys() : u("user_file")
 {
 	if (u.get_num() == 0)
-		u.add(user("-1", "sjtu", 7, "root"));
-	ifstream in("current_user");
+		u.add(user("root", "sjtu", 7, "yyu"));
+	ifstream in("current_user", ios::binary | ios::in);
 	if (in.is_open()) in.read(reinterpret_cast<char *> (&cur), sizeof(cur));
-	else cur.level = 0;
+	else cur = user("root", "sjtu", 7, "yyu");
 }
 
 usersys::~usersys()
 {
-	ofstream of("current_user");
+	ofstream of("current_user", ios::binary | ios::out);
 	of.write(reinterpret_cast<char *> (&cur), sizeof(cur));
 }
 
@@ -44,6 +44,7 @@ void usersys::useradd(const string &id, const string &pas, const string &lev, co
 {
 	user x = user(id, pas, lev, na);
 	if (x.level >= cur.level) { puts("Invalid"); return; }
+	if (u.exist(x)) { puts("Invalid"); return; }
 	u.add(x);
 }
 
@@ -83,6 +84,11 @@ bool usersys::the_same(const char *c, int len, const string &a)
 	for (int i = 0; i < a.size(); ++i) if (c[i] != a[i]) return false;
 	for (int i = a.size(); i < len; ++i) if (c[i] != 0) return false;
 	return true;
+}
+
+void usersys::show()
+{
+	u.make_print();
 }
 
 usersys::user::user()
@@ -170,4 +176,5 @@ void usersys::user::make_fail()
 
 void usersys::user::print()
 {
+	cout << "the user id = " << user_id << endl;
 }

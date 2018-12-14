@@ -12,6 +12,12 @@ booksys::~booksys()
 {
 }
 
+bool booksys::exist_ISBN(const string &str)
+{
+	book_ISBN x(str);
+	return _ISBN.exist(x);
+}
+
 bool booksys::select_empty()
 {
 	return cur.quantity == -1;
@@ -85,6 +91,7 @@ void booksys::set_author(const string &str)
 void booksys::set_keyword(const string &str)
 {
 	cur.set_keyword(str);
+	cur.set_true_key(str);
 }
 
 void booksys::set_price(const string &str)
@@ -196,6 +203,7 @@ void booksys::book_ISBN::operator=(const book_base &a)
 	memcpy((void *) name, a.name, N2);
 	memcpy((void *) author, a.author, N2);
 	memcpy((void *) keyword, a.keyword, N2);
+	memcpy((void *) true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = false;
@@ -245,6 +253,7 @@ void booksys::book_name::operator=(const book_base &a)
 	memcpy((void *) name, a.name, N2);
 	memcpy((void *) author, a.author, N2);
 	memcpy((void *) keyword, a.keyword, N2);
+	memcpy((void *) true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = a.ignoreISBN;
@@ -294,6 +303,7 @@ void booksys::book_author::operator=(const book_base &a)
 	memcpy((void *) name, a.name, N2);
 	memcpy((void *) author, a.author, N2);
 	memcpy((void *) keyword, a.keyword, N2);
+	memcpy((void *) true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = a.ignoreISBN;
@@ -339,10 +349,11 @@ bool booksys::book_keyword::operator==(const book_keyword &a) const
 
 void booksys::book_keyword::operator=(const book_base &a)
 {
-	memcpy((void *)ISBN, a.ISBN, N1);
-	memcpy((void *)name, a.name, N2);
-	memcpy((void *)author, a.author, N2);
-	memcpy((void *)keyword, a.keyword, N2);
+	memcpy((void *) ISBN, a.ISBN, N1);
+	memcpy((void *) name, a.name, N2);
+	memcpy((void *) author, a.author, N2);
+	memcpy((void *) keyword, a.keyword, N2);
+	memcpy((void *) true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = a.ignoreISBN;
@@ -354,6 +365,7 @@ booksys::book_base::book_base()
 	memset(name, 0, sizeof(name));
 	memset(author, 0, sizeof(author));
 	memset(keyword, 0, sizeof(keyword));
+	memset(true_key, 0, sizeof(true_key));
 	quantity = 0;
 	price = 0;
 	ignoreISBN = false;
@@ -361,10 +373,11 @@ booksys::book_base::book_base()
 
 booksys::book_base::book_base(const book_base &a)
 {
-	memcpy((void *)ISBN, a.ISBN, N1);
-	memcpy((void *)name, a.name, N2);
-	memcpy((void *)author, a.author, N2);
-	memcpy((void *)keyword, a.keyword, N2);
+	memcpy((void *) ISBN, a.ISBN, N1);
+	memcpy((void *) name, a.name, N2);
+	memcpy((void *) author, a.author, N2);
+	memcpy((void *) keyword, a.keyword, N2);
+	memcpy((void *) true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = a.ignoreISBN;
@@ -391,6 +404,7 @@ void booksys::book_base::operator=(const book_base &a)
 	memcpy(name, a.name, N2);
 	memcpy(author, a.author, N2);
 	memcpy(keyword, a.keyword, N2);
+	memcpy(true_key, a.true_key, N2);
 	quantity = a.quantity;
 	price = a.price;
 	ignoreISBN = a.ignoreISBN;
@@ -425,6 +439,12 @@ void booksys::book_base::set_keyword(const string &a)
 	for (int i = a.size(); i < N2; ++i) keyword[i] = 0;
 }
 
+void booksys::book_base::set_true_key(const string &a)
+{
+	for (int i = 0; i < a.size(); ++i) true_key[i] = a[i];
+	for (int i = a.size(); i < N2; ++i) true_key[i] = 0;
+}
+
 void booksys::book_base::set_price(const string &str)
 {
 	istringstream ss(str);
@@ -433,6 +453,6 @@ void booksys::book_base::set_price(const string &str)
 
 void booksys::book_base::print()
 {
-	printf("%s\t%s\t%s\t%s\t%lf\t%d±¾\n", ISBN, name, author, keyword, price, quantity);
+	printf("%s\t%s\t%s\t%s\t%.2lf\t%dÂ±Â¾\n", ISBN, name, author, true_key, price, quantity);
 }
 

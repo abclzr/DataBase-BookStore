@@ -1,6 +1,93 @@
-#include "database.h"
+#pragma once
+
 #include<fstream>
 #include<string>
+using namespace std;
+
+template<class T>
+class database
+{
+public:
+	static const int B = 100;
+	int head, tail, num, top;
+	fstream file, trash;
+
+	//deliver a file name to the constructing function, if the file doesn't exist, make a new one.
+	database(std::string);
+	~database();
+
+	//return whether the element exits in the database
+	bool exist(const T&);
+	
+	//return the tot number of the elements;
+	int get_num();
+
+	//return the position of next block;
+	int get_next(int);
+
+	//return the size of the block;
+	int get_size(int);
+
+	//set the next positon;
+	void set_next(int, int);
+
+	//set the size of the block;
+	void set_size(int, int);
+
+	//find the position of the block that fits x;
+	int get(const T &);
+
+	int get_(const T &);
+
+	//find the position of the fits x in the file;
+	int get_pos_in_block(int, const T &);
+
+	//return the position of a new block;
+	int getnew();
+
+	//move a slice of the block;
+	void move(int, int, int, int, int);
+
+	//insert an element in one block;
+	void insert(int, const T &);
+
+	//add x into the block-shape links;
+	void add(const T &);
+
+	//find the previous position of the block;
+	int get_pre(int);
+
+	//remove a block;
+	void del(int);
+
+	//delete an element in a block;
+	void rem(int, const T &);
+
+	//delete an element
+	void remove(const T &);
+
+	void change(const T &);
+
+	//find the element
+	const T &get_acc(const T &);
+
+	//print all
+	void make_print();
+
+	//print the specific books
+	void make_print(const T &);
+};
+
+template<class T>
+inline bool database<T>::exist(const T &x)
+{
+	int pos = get(x);
+	if (pos != 0) {
+		pos = get_pos_in_block(pos, x);
+		if (pos != -1) return true;
+	}
+	return false;
+}
 
 template<class T>
 database<T>::database(std::string s)
@@ -21,8 +108,8 @@ database<T>::database(std::string s)
 	if (!trash.is_open()) {
 		trash.open(s + ".trash", ios::binary | ios::out);
 		top = 0;
-		file.seekp(0);
-		file.write(reinterpret_cast<char *> (&top), sizeof(top));
+		trash.seekp(0);
+		trash.write(reinterpret_cast<char *> (&top), sizeof(top));
 		trash.close();
 		trash.open(s + "trash", ios::binary | ios::in | ios::out);
 	}
@@ -85,7 +172,7 @@ void database<T>::set_size(int pos, int size) {
 
 template<class T>
 int database<T>::getnew() {
-	if (top == 0) {
+	if (true) {
 		int t = tail;
 		tail += sizeof(int) * 2 + sizeof(T) * B;
 		file.seekp(t);
@@ -145,7 +232,7 @@ int database<T>::get_(const T &x)
 }
 
 template<class T>
-int database<T>::get_pos_in_block(const T &x, int pos)
+int database<T>::get_pos_in_block(int pos, const T &x)
 {
 	if (pos == -1) pos = get(x);
 	int size = get_size(pos);
@@ -158,6 +245,8 @@ int database<T>::get_pos_in_block(const T &x, int pos)
 	return -1;
 }
 
+
+#include<iostream>
 template<class T>
 void database<T>::move(int l1, int r1, int l2, int r2, int flag) {
 	int t1, t2; T x;
@@ -191,22 +280,30 @@ void database<T>::insert(int pos, const T &x) {
 	for (int i = 0; i < size; ++i) {
 		file.read(reinterpret_cast<char *> (&a), sizeof(a));
 		if (x < a) {
-			move(pos + sizeof(int) * 2 + sizeof(T) * i, pos + sizeof(int) * 2 + sizeof(T) * (size - 1), pos + sizeof(int) * 2 + sizeof(T) * (i + 1), pos + sizeof(int) * 2 + sizeof(T) * size, 0);
+			move(pos + sizeof(int) * 2 + sizeof(T) * i, pos + sizeof(int) * 2 + sizeof(T) * size, pos + sizeof(int) * 2 + sizeof(T) * (i + 1), pos + sizeof(int) * 2 + sizeof(T) * (size + 1), 0);
 			file.seekp(pos + sizeof(int) * 2 + sizeof(T) * i);
-			file.write(reinterpret_cast<char *> (&x), sizeof(x));
-			set_size(size + 1);
+			file.write(reinterpret_cast<const char *> (&x), sizeof(x));
+			set_size(pos, size + 1);
 			return;
 		}
 	}
 
 	file.seekp(pos + sizeof(int) * 2 + sizeof(T) * size);
-	file.write(reinterpret_cast<char *> (&x), sizeof(x));
-	set_size(size + 1);
+	file.write(reinterpret_cast<const char *> (&x), sizeof(x));
+	set_size(pos, size + 1);
 }
 
 template<class T>
 void database<T>::add(const T &x) {
 	++num;
+	if (head == 0) {
+		head = getnew();
+		set_next(head, 0);
+		set_size(head, 1);
+		file.seekp(head + sizeof(int) * 2);
+		file.write(reinterpret_cast<const char *> (&x), sizeof(x));
+		return;
+	}
 	int pos = get(x);
 	int nxt = get_next(pos), size = get_size(pos);
 
@@ -278,26 +375,28 @@ template<class T>
 void database<T>::remove(const T &x) {
 	int pos = get(x);
 	rem(pos, x);
+	--num;
 }
 
 template<class T>
 void database<T>::change(const T &x)
 {
-	int pos = find(x); int size = get_size(pos);
+	int pos = get(x); int size = get_size(pos);
 	static T a;
 	file.seekg(pos + sizeof(int) * 2);
 	for (int i = 0; i < size; ++i) {
 		file.read(reinterpret_cast<char *> (&a), sizeof(a));
 		if (a == x) {
 			file.seekp(pos + sizeof(int) * 2 + sizeof(T) * i);
-			file.write(reinterpret_cast<char *> (&x), sizeof(x));
+			file.write(reinterpret_cast<const char *> (&x), sizeof(x));
 		}
 	}
 }
 
 template<class T>
-const T &database<T>::get_acc(const T &x) const {
-	int pos = find(x); int size = get_size(pos);
+const T &database<T>::get_acc(const T &x)
+{
+	int pos = get(x); int size = get_size(pos);
 	static T a;
 	file.seekg(pos + sizeof(int) * 2);
 	for (int i = 0; i < size; ++i) {

@@ -117,13 +117,12 @@
   <ItemGroup>
     <ClCompile Include="bookstore.cpp" />
     <ClCompile Include="booksys.cpp" />
-    <ClCompile Include="database.cpp" />
     <ClCompile Include="finance.cpp" />
     <ClCompile Include="usersys.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="booksys.h" />
-    <ClInclude Include="database.h" />
+    <ClInclude Include="database.hpp" />
     <ClInclude Include="finance.h" />
     <ClInclude Include="usersys.h" />
   </ItemGroup>
