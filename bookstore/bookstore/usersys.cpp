@@ -55,7 +55,8 @@ void usersys::registerr(const string &id, const string &pas, const string &na)
 
 void usersys::deletee(const string &id)
 {
-	u.remove(user(id));
+	user a(id);
+	u.remove(a);
 }
 
 void usersys::passwd(const string &id, const string &pas)
@@ -92,7 +93,15 @@ usersys::user::user()
 	level = 0;
 }
 
-usersys::user::user(const string &id, const string &pas = "", int lev = 0, const string &na = "")
+usersys::user::user(const string &id)
+{
+	set_user_id(id);
+	set_passwd("");
+	set_level(0);
+	set_name("");
+}
+
+usersys::user::user(const string &id, const string &pas, int lev, const string &na)
 {
 	set_user_id(id);
 	set_passwd(pas);
@@ -143,7 +152,7 @@ void usersys::user::set_name(const string &a)
 
 void usersys::user::set_level(const string &a)
 {
-	if (a == "0") level = 0;
+	if (a == "0") this->level = 0;
 	else if (a == "1") level = 1;
 	else if (a == "3") level = 3;
 	else if (a == "7") level = 7;

@@ -127,16 +127,25 @@ void booksys::show_ISBN(const string &str)
 	_ISBN.make_print(x);
 }
 
-void booksys::show_name(const string &)
+void booksys::show_name(const string &str)
 {
+	book_name x(str);
+	x.ignoreISBN = true;
+	_name.make_print(x);
 }
 
-void booksys::show_author(const string &)
+void booksys::show_author(const string &str)
 {
+	book_author x(str);
+	x.ignoreISBN = true;
+	_author.make_print(x);
 }
 
-void booksys::show_keyword(const string &)
+void booksys::show_keyword(const string &str)
 {
+	book_keyword x(str);
+	x.ignoreISBN = true;
+	_keyword.make_print(x);
 }
 
 void booksys::buy(const string &str, int num)

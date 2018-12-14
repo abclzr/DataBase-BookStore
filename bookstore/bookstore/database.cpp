@@ -93,7 +93,7 @@ int database<T>::getnew() {
 		file.seekp(t);
 		int blank = 0;
 		file.write(reinterpret_cast<char *> (&blank), sizeof(blank));
-		file.write(reinterpret_cast<char *> (&blakn), sizeof(blank));
+		file.write(reinterpret_cast<char *> (&blank), sizeof(blank));
 		return t;
 	}
 	else {
@@ -118,6 +118,25 @@ int database<T>::get(const T &x) {
 		file.seekg(tmp + sizeof(int) * 2);
 		file.read(reinterpret_cast<char *> (&fr), sizeof(fr));
 		if (x < fr) return pre;
+		else {
+			pre = tmp;
+			tmp = nxt;
+		}
+	}
+
+	if (tmp == 0) return pre;
+}
+
+template<class T>
+int database<T>::get_(const T &x)
+{
+	int tmp = head, pre = head, nxt;
+	T fr;
+	while (tmp != 0) {
+		nxt = get_next(tmp);
+		file.seekg(tmp + sizeof(int) * 2);
+		file.read(reinterpret_cast<char *> (&fr), sizeof(fr));
+		if (x < fr || x == fr) return pre;
 		else {
 			pre = tmp;
 			tmp = nxt;
@@ -310,9 +329,19 @@ void database<T>::make_print()
 template<class T>
 void database<T>::make_print(const T &x)
 {
-	int pos = get(x), tmp = get_pos_in_block(x, pos);
+	int pos = get_(x);
+	int tmp = get_pos_in_block(pos, x), size;
 	T a;
-	while (true) {
-		
+	if (tmp == -1) pos = get_next(pos);
+	while (pos) {
+		size = get_size(pos);
+		tmp = get_pos_in_block(pos, x);
+		file.seekg(pos + sizeof(int) * 2 + sizeof(T) * tmp);
+		for (int i = tmp; i < size; ++i) {
+			file.read(reinterpret_cast<char *> (&a), sizeof(a));
+			if (a == x) a.print();
+			else return;
+		}
+		pos = get_next(pos);
 	}
 }

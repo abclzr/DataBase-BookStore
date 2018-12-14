@@ -5,14 +5,15 @@
 #include<sstream>
 #include "database.h"
 #include "finance.h"
-using namespace std;
 
-const int N1 = 20;
-const int N2 = 40;
+using namespace std;
 
 class booksys
 {
 public:
+	static const int N1 = 20;
+	static const int N2 = 40;
+
 	booksys();
 	~booksys();
 

@@ -52,10 +52,14 @@ ifstream in;
 
 bool run(string &cmd) {
 	vector<string> c;
-	int p = cmd.find(" ");
+	int p = cmd.find(" "), l, r;
 	while (p != string::npos) {
 		c.push_back(cmd.substr(0, p));
-		cmd = cmd.substr(p + 1, cmd.size() - p - 1);
+		cmd = cmd.substr(p + 1);
+		l = cmd.find('"');
+		r = cmd.find('"', l + 1);
+		p = cmd.find(' ');
+		while (l < p && p < r) p = cmd.find(' ', p + 1);
 	}
 	c.push_back(cmd);
 
@@ -76,7 +80,7 @@ bool run(string &cmd) {
 		else user.logout();
 		break;
 	case 2://useradd
-		if (c.size() != 5 || user.level < 3) error();
+		if (c.size() != 5 || user.level() < 3) error();
 		else user.useradd(c[1], c[2], c[3], c[4]);
 		break;
 	case 3://register
@@ -109,7 +113,7 @@ bool run(string &cmd) {
 				int findequ = s.find("=");
 				if (findequ == string::npos) { error(); break; }
 				string id = s.substr(1, findequ - 1);
-				string changed = s.substr(findequ + 1, s.size() - findequ - 1);
+				string changed = s.substr(findequ + 1);
 
 				if (id == "ISBN") book.set_ISBN(changed);
 				else if (id == "name") book.set_name(changed.substr(1, changed.size() - 2));
@@ -149,7 +153,7 @@ bool run(string &cmd) {
 				int p = s.find("=");
 				if (p == string::npos) { error(); break; }
 				string id = s.substr(1, p - 1);
-				string changed = s.substr(p + 1, s.size() - p - 1);
+				string changed = s.substr(p + 1);
 
 				if (id == "ISBN") book.show_ISBN(changed);
 				else if (id == "name") book.show_name(changed.substr(1, changed.size() - 2));

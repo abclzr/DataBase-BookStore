@@ -5,12 +5,12 @@
 #include "database.h"
 using namespace std;
 
-const int N1 = 30;
-const int N2 = 20;
-
 class usersys
 {
 public:
+	static const int N1 = 30;
+	static const int N2 = 20;
+
 	usersys();
 	~usersys();
 
@@ -44,6 +44,7 @@ public:
 	class user {
 	public:
 		user();
+		user(const string &);
 		user(const string &, const string &, int, const string &);
 		user(const string &, const string &, const string &, const string &);
 

@@ -2,13 +2,13 @@
 
 #include<fstream>
 #include<string>
-
-const int B = 100;
+using namespace std;
 
 template<class T>
 class database
 {
 public:
+	static const int B = 100;
 	int head, tail, num, top;
 	fstream file, trash;
 
@@ -33,6 +33,8 @@ public:
 
 	//find the position of the block that fits x;
 	int get(const T &);
+
+	int get_(const T &);
 
 	//find the position of the fits x in the file;
 	int get_pos_in_block(const T &, int);
