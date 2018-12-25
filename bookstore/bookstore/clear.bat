@@ -10,3 +10,6 @@ del name_file
 del name_file.trash
 del user_file
 del user_file.trash
+del user_log
+del user_log.trash
+del finance_report

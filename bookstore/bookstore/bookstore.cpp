@@ -147,7 +147,7 @@ bool run(string &cmd) {
 	case 8:
 		if (book.select_empty()) { error(); break; }
 		if (c.size() != 3 || user.level() < 3) error();
-		else book.importt(to_int(c[1]), to_double(c[2]));
+		else book.importt(to_int(c[1]), to_double(c[2])), user.importt(to_int(c[1]), to_double(c[2]));
 		break;
 	case 9://show
 		if (user.level() < 1) { error(); break; }
@@ -184,14 +184,31 @@ bool run(string &cmd) {
 		break;
 	case 10://buy
 		if (c.size() != 3 || user.level() < 1) error();
-		else book.buy(c[1], to_int(c[2]));
+		else book.buy(c[1], to_int(c[2])), user.buy(c[1], to_int(c[2]));
 		break;
 	case 11://load
 		in.open(c[1]);
 		break;
 	case 12://report
+		if (c.size() != 2) { error(); break; }
+		if (c[1] == "finance") {
+			if (user.level() < 7) { error(); break; }
+			book.show_finance_detail();
+		}
+		else if (c[1] == "employee") {
+			if (user.level() < 7) { error(); break; }
+			user.show_user_operation_detail();
+		}
+		else if (c[1] == "myself") {
+			if (user.level() < 3) { error(); break; }
+			user.show_myself_operation_detail();
+		}
+		else
+			error();
 		break;
 	case 13://log
+		if (user.level() < 7) { error(); break; }
+
 		break;
 	case 14:
 		error();
@@ -203,6 +220,30 @@ bool run(string &cmd) {
 int main() {
 	string cmd;
 	in.open("command.txt");
+
+	if (!in.is_open()) {
+		cout << "Welcome to the Offline Bookstore!" << endl;
+		cout << "Operations following:" << endl;
+		cout << "¨u¨w¨v" << endl;
+		cout << "¨v¨w¨n©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤" << endl;
+		cout << "\tPlease print \"exit\" to exit;" << endl;
+		cout << "\tPlease print \"su\" to login;" << endl;
+		cout << "\tPlease print \"logout\" to logout;" << endl;
+		cout << "\tPlease print \"useradd\" to add user;" << endl;
+		cout << "\tPlease print \"register\" to register;" << endl;
+		cout << "\tPlease print \"delete\" to delete a user;" << endl;
+		cout << "\tPlease print \"passwd\" to change password;" << endl;
+		cout << "\tPlease print \"select\" to select a book's ISBN number or create an empty book;" << endl;
+		cout << "\tPlease print \"modify\" to modify the book selected last time;" << endl;
+		cout << "\tPlease print \"import\" to import some book to the store;" << endl;
+		cout << "\tPlease print \"show\" to show the information;" << endl;
+		cout << "\tPlease print \"buy\" if you want to buy some book;" << endl;
+		cout << "\tPlease print \"load\" to load some commands from a file" << endl;
+		cout << "\tPlease print \"report\" to get the report list" << endl;
+		cout << "\tPlease print \"log\" to check the log" << endl;
+		cout << "¨u¨w¨v" << endl;
+		cout << "¨v¨w¨n©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤" << endl;
+	}
 
 	while (true) {
 		if (in.is_open()) getline(in, cmd);

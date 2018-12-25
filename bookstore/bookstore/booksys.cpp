@@ -110,6 +110,8 @@ void booksys::importt(int num, double price)
 	cur.quantity += num;
 	push();
 
+	f_o.lose_book(num, price);
+
 	finance.lose(price);
 }
 
@@ -165,7 +167,14 @@ void booksys::buy(const string &str, int num)
 	a.quantity -= num;
 	add_all(a);
 
+	f_o.gain_book(num, a.price * num);
+
 	finance.gain(num * a.price);
+}
+
+void booksys::show_finance_detail()
+{
+	f_o.show();
 }
 
 booksys::book_ISBN::book_ISBN() : book_base()
@@ -456,3 +465,43 @@ void booksys::book_base::print()
 	printf("%s\t%s\t%s\t%s\t%.2lf\t%d本\n", ISBN, name, author, true_key, price, quantity);
 }
 
+booksys::finance_report::finance_report()
+{
+	fstream f("finance_report", ios::in | ios::out | ios::binary);
+	if (!f.is_open()) {
+		sum_buy = 0; sum_import = 0;
+		gain = 0; lose = 0;
+		f.open("finance_report", ios::out | ios::binary);
+		f.write(reinterpret_cast<char *> (this), sizeof(*this));
+		f.close();
+		f.open("finance_report", ios::in | ios::out | ios::binary);
+	}
+	else {
+		f.read(reinterpret_cast<char *> (this), sizeof(*this));
+	}
+}
+
+void booksys::finance_report::show()
+{
+	cout << "FINANCE REPORT!!!" << endl;
+	cout << "╱╳╲" << endl;
+	cout << "╲╳╪─────────────" << endl;
+	cout << "buy : " << sum_buy << "books in total" << endl;
+	cout << "gain : " << gain << "yuan" << endl;
+	cout << "import : " << sum_import << "books in total" << endl;
+	cout << "lose : " << lose << "yuan" << endl;
+	cout << "╱╳╲" << endl;
+	cout << "╲╳╪─────────────" << endl;
+}
+
+void booksys::finance_report::gain_book(int x, double p)
+{
+	sum_buy += x;
+	gain += p;
+}
+
+void booksys::finance_report::lose_book(int x, double p)
+{
+	sum_import += x;
+	lose += p;
+}

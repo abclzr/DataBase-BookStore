@@ -54,6 +54,9 @@ public:
 	//buy k books;
 	void buy(const string &, int);
 
+	//show finance report
+	void show_finance_detail();
+
 	class book_base {
 	public:
 		char ISBN[N1], name[N2], author[N2], keyword[N2], true_key[N2];
@@ -120,14 +123,27 @@ public:
 	//add the book in all files
 	void add_all(const book_base &);
 
+	class finance_report {
+	private:
+		int sum_buy, sum_import;
+		double gain, lose;
+	public:
+		finance_report();
+		void show();
+		void gain_book(int, double);
+		void lose_book(int, double);
+	};
+
 private:
 	database<book_ISBN> _ISBN;
 	database<book_name> _name;
 	database<book_author> _author;
 	database<book_keyword> _keyword;
-
+	
 	book_base cur;
 
 	finance_base finance;
+
+	finance_report f_o;
 };
 
